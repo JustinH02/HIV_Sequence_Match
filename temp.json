@@ -1,0 +1,28 @@
+{
+  "pipeline_id": "",
+  "email": "myaddress@somewhere.com",
+  "pipeline_title": "My MHCI single-stage pipeline",
+  "run_stage_range": [
+    1,
+    1
+  ],
+  "stages": [
+    {
+      "stage_number": 1,
+      "tool_group": "mhci",
+      "input_sequence_text": ">GagMGARASVLSGGQLDRWEKIRLRPGGKKKYQLKHVVWASRELERFAVNPGLLETSGGCKQILEQLQPSLQTGSEELKSLFNTVAVLYCVHQKIEVKDTKEALDKIEEERNKSKKMAQQAAAGTGNSSQVSQNYPIVQNLQGQMVHQAISPRTLNAWVKVVEEKAFSPEVIPMFSALSEGATPQDLNTMLNTVGGHQAAMQMLKETINEEAAEWDRLHPVHAGPIAPGQMREPRGSDIAGTTSTLQEQIGWMTNNPPIPVGEIYKRWIILGLNKIVRMYSPTSILDIRQGPKEPFRDYVDRFYKTLRAEQASQEVKNWMTETLLVQNANPDCKTILKALGPAATLEEMMTACQGVGGPGHKAKILAEAMSQVTSSATIMMQRGNFKNQRPIKCFNCGKVGHLAKHCRAPRKRGCWKCGKEGHQMKDCTERQANFLGKIWPSNKGRPGNFLQSRPQPTAPPAPPEESFRFGEETTTPPQEQNQIDKELYPLTSLKSLFGNDPSSQ",
+      "input_parameters": {
+        "alleles": "HLA-DRB1*11:01",
+        "peptide_length_range": [
+          15,15
+        ],
+        "predictors": [
+          {
+            "type": "MHC-II Binding/Elution",
+            "method": "netmhcpan_el"
+          }
+        ]
+      }
+    }
+  ]
+}
