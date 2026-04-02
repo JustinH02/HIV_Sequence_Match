@@ -9,10 +9,12 @@ if (!requireNamespace("jsonlite", quietly = TRUE)) {
 library(httr2)
 library(jsonlite)
 
+args <- commandArgs(trailingOnly = TRUE)
+
 api_url <- "https://api-nextgen-tools.iedb.org/api/v1/pipeline"
 results_base_url <- "https://api-nextgen-tools.iedb.org/api/v1/results"
 poll_interval_seconds <- 10
-max_poll_attempts <- 30
+max_poll_attempts <- 60
 output_dir <- "."
 
 pretty_print_json <- function(text) {
@@ -32,6 +34,33 @@ save_json_text <- function(json_text, file_path) {
     formatted <- toJSON(parsed, pretty = TRUE, auto_unbox = TRUE)
     writeLines(formatted, con = file_path, useBytes = TRUE)
   }
+}
+
+read_fasta_text <- function(path) {
+  if (!file.exists(path)) {
+    stop(sprintf("Input FASTA file not found: %s", path))
+  }
+
+  lines <- readLines(path, warn = FALSE)
+  lines <- trimws(lines)
+  lines <- lines[nzchar(lines)]
+
+  if (length(lines) == 0) {
+    stop("Input FASTA file is empty.")
+  }
+
+  if (!startsWith(lines[[1]], ">")) {
+    lines <- c(">InputSequence", lines)
+  }
+
+  # IEDB rejects '*' characters in sequence content; strip them from non-header lines.
+  for (i in seq_along(lines)) {
+    if (!startsWith(lines[[i]], ">")) {
+      lines[[i]] <- gsub("\\*", "", lines[[i]])
+    }
+  }
+
+  paste(lines, collapse = "\n")
 }
 
 find_results_id <- function(x) {
@@ -111,7 +140,8 @@ get_full_results_response <- function(results_id) {
   full_url <- sprintf("%s/%s", results_base_url, URLencode(results_id, reserved = TRUE))
   full_req <- request(full_url) |>
     req_method("GET") |>
-    req_headers("Accept" = "application/json")
+    req_headers("Accept" = "application/json") |>
+    req_error(is_error = \(resp) FALSE)  # always return body even on 4xx/5xx
 
   full_resp <- req_perform(full_req)
 
@@ -132,7 +162,7 @@ payload <- list(
       stage_number = 1,
       stage_type = "prediction",
       tool_group = "mhcii",
-      input_sequence_text = paste(
+      input_sequence_text = if (length(args) >= 1) read_fasta_text(args[[1]]) else paste(
         ">Gag",
         "MGARASVLSGGQLDRWEKIRLRPGGKKKYQLKHVVWASRELERFAVNPGLLETSGGC",
         "KQILEQLQPSLQTGSEELKSLFNTVAVLYCVHQKIEVKDTKEALDKIEEERNKSK",

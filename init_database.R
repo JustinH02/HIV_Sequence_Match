@@ -74,14 +74,65 @@ dbExecute(con, "
   )
 ")
 
+# Table 4: HLP primary-keyed sequence regions (gag/pol/env)
+dbExecute(con, "
+  CREATE TABLE IF NOT EXISTS hlp_sequence_regions (
+    hlp TEXT PRIMARY KEY,
+    gag TEXT NOT NULL,
+    pol TEXT NOT NULL,
+    env TEXT NOT NULL,
+    pipeline_result_json TEXT,
+    source_file TEXT,
+    updated_at TEXT NOT NULL
+  )
+")
+
+# Table 5: Provirus donor primary-keyed sequence regions (gag/pol)
+dbExecute(con, "
+  CREATE TABLE IF NOT EXISTS provirus_donor_sequence_regions (
+    donor TEXT PRIMARY KEY,
+    gag TEXT NOT NULL,
+    pol TEXT NOT NULL,
+    pipeline_result_json TEXT,
+    source_file TEXT,
+    updated_at TEXT NOT NULL
+  )
+")
+
+# Table 6: Batch API result storage for HLP x donor x region runs.
+dbExecute(con, "
+  CREATE TABLE IF NOT EXISTS hlp_donor_pipeline_results (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    hlp TEXT NOT NULL,
+    donor TEXT NOT NULL,
+    protein_region TEXT NOT NULL,
+    alleles_json TEXT NOT NULL,
+    request_payload_json TEXT NOT NULL,
+    submission_http_status INTEGER,
+    submission_response_json TEXT,
+    result_id TEXT,
+    final_status TEXT,
+    result_json TEXT,
+    error_message TEXT,
+    started_at TEXT NOT NULL,
+    completed_at TEXT
+  )
+")
+
 # Backward-compatible migration for existing databases.
 add_column_if_missing(con, "hlp", "protein_region", "TEXT")
 add_column_if_missing(con, "provirus_donor", "protein_region", "TEXT")
+add_column_if_missing(con, "hlp_sequence_regions", "pipeline_result_json", "TEXT")
+add_column_if_missing(con, "provirus_donor_sequence_regions", "pipeline_result_json", "TEXT")
 
 # Optional indexes for faster filtering.
 dbExecute(con, "CREATE INDEX IF NOT EXISTS idx_donor_donor_alleles ON donor(donor, alleles)")
 dbExecute(con, "CREATE INDEX IF NOT EXISTS idx_hlp_hlp_alleles ON hlp(hlp, alleles)")
 dbExecute(con, "CREATE INDEX IF NOT EXISTS idx_provirus_donor_alleles ON provirus_donor(provirus_donor, alleles)")
+dbExecute(con, "CREATE INDEX IF NOT EXISTS idx_hlp_sequence_regions_updated_at ON hlp_sequence_regions(updated_at)")
+dbExecute(con, "CREATE INDEX IF NOT EXISTS idx_provirus_donor_sequence_regions_updated_at ON provirus_donor_sequence_regions(updated_at)")
+dbExecute(con, "CREATE INDEX IF NOT EXISTS idx_hlp_donor_pipeline_lookup ON hlp_donor_pipeline_results(hlp, donor, protein_region)")
+dbExecute(con, "CREATE INDEX IF NOT EXISTS idx_hlp_donor_pipeline_result_id ON hlp_donor_pipeline_results(result_id)")
 
 dbDisconnect(con)
 

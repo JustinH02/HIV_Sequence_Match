@@ -1,0 +1,82 @@
+
+Go through the end to end process. What exact comparisons are being made?:
+    HLP pol -> specific provirus pol? all provirus pols? all provirus all envs?
+    are there specific alleles for specific envs/hlps/provirus's?
+
+    gag-gag pol-pol- env-env
+    filter is used for all 3 protein sections
+    
+
+how is this being used?
+
+how does this fit into the rest of ur research? precisely what are you doing with this information? 
+    put it in a paper, note percentage overlap to see its usefuleness. Good overlap = no need to change anything 
+    This is a checking tool to make sure everything is correct with what hteyre doing
+    1 day might be used to personolize medicine.   
+        iF no overlap, between provirus and HLp, we know HLP should not be used
+
+
+Do you guys want it downloaded onto personal devices?
+    collegue might. colleague only person using it as of now
+
+what was previous process like? how long did it take? what resources did you use?
+    used website, but scalability is none
+
+Does this need to integrate with any prexisting systems?
+    nextgen
+    excel sheet as possibility 
+
+How complex do you need the UI to be?
+    just usable
+
+what infrastructure do you currently have?
+    dedicated desktop LOL. 
+
+Do you have a budget?
+    hardware- yes.
+    $2000 max?
+    Cloud infrastructure -no. 
+    laptop allowed
+
+Rate of new provirus donors?
+    unknown.
+
+how fast does this need to be? 
+    Can wait hours, nice to have quick
+
+using fasta file formats. lmk if there are any issues
+    its fine
+
+Currently using NetMHCIIpan 4.1 BA because it supports non DR alleles.
+
+digram refers to subtype B. what does that mean?
+    HIV has 12 different subclasses
+    HIV takes either A,B,C,D,F or G
+    ex. HIV B is dominant in USA/Canada
+    Provirus DNA is slightly different depending on the subclasses
+    ***NEED TO KNOW WHICH SUBTYPE THE HLPS ARE BEST EQUIPPED FOR***
+        NOT NEEDED IN PROGRAM
+
+HLA class 2 refers to the search on nextgen?
+
+Getting the following error: HLP 4092 allele HLA-DPA1*01:03/DPB1*104:01 region gag -> Timed out after 360 seconds waiting for result status
+HLP 4092 allele HLA-DPA1*02:01/DPB1*04:01 region gag also has issue
+    if nextgen fails, Is there a scientific reason for this error?
+
+______________________________________________________________________________________________________________________________________
+6-8 alleles per donor
+
+provirus comes from people with HIV
+
+provirus can give gag pol and env (max 3)
+
+for every provirus donor, there is a allele systems - posibilty of increasing provirus donor
+
+output results into a visual figure:
+    no ordering to peptides, create a visual to show which peptides are matching between HLP and provirus.
+
+add feature to see how long a job took
+
+Indicate where the matches occur and percent similarity there is between them
+    Match all peptides from HLP with all peptides from provirus donor, cross compare, >80% match = record the match. 
+        Bold the mismatched letter from the >80% batch
